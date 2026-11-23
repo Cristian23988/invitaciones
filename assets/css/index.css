@@ -1,0 +1,312 @@
+/* =========================
+   BASE
+========================= */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden; /* 🔥 evita cortes laterales */
+  background-color: #c8a27a;
+}
+
+
+/* =========================
+   TURNTABLE
+========================= */
+.turntable {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  
+}
+
+/* =========================
+   PLATO
+========================= */
+.platter {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2b2b2b, #111 70%);
+  box-shadow:
+    inset 0 0 35px rgba(0,0,0,.85),
+    0 18px 35px rgba(0,0,0,.6);
+  z-index: 1;
+}
+
+/* =========================
+   VINILO
+========================= */
+.vinyl {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      #111 0px,
+      #111 1px,
+      #1a1a1a 2px,
+      #111 3px
+    );
+  animation: spin 1.8s linear infinite;
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,.8),
+    0 8px 14px rgba(0,0,0,.55);
+  z-index: 2;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* etiqueta */
+.label {
+  position: absolute;
+  inset: 35%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5e6d3, #c9a96d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.names {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #5a2a12;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* agujero */
+.hole {
+  position: absolute;
+  inset: 48%;
+  border-radius: 50%;
+  background: #222;
+}
+
+/* =========================
+   BRAZO
+========================= */
+.arm {
+  position: absolute;
+  width: 130px;
+  top: -85px;
+  right: -50px;
+  transform-origin: 20% 12%;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,.5));
+  z-index: 4;
+  pointer-events: none;
+  animation: armIdle 5s ease-in-out infinite;
+}
+
+@keyframes armIdle {
+  0%,100% { transform: rotate(22deg); }
+  50% { transform: rotate(22.6deg); }
+}
+
+/* =========================
+   TEXTO
+========================= */
+.palette-note {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: Georgia, serif;
+  font-size: 15px;
+  color: #6b2f14;
+  text-align: center;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: .75; }
+  50% { opacity: 1; }
+}
+
+/* =========================
+   HOJAS
+========================= */
+.leaf {
+  position: absolute;
+  top: -10%;
+  width: 44px;
+  height: 56px;
+  opacity: .6;
+  animation: fall linear infinite, sway ease-in-out infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(120vh) rotate(360deg); }
+}
+
+@keyframes sway {
+  0%,100% { margin-left: 0 }
+  50% { margin-left: 35px }
+}
+
+/* =========================
+   LOADER
+========================= */
+#loader {
+  position: fixed;
+  inset: 0;
+  background-color: #c8a27a;
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+
+.bar {
+  width: 200px;
+  height: 6px;
+  background: rgba(0,0,0,.2);
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #6b2f14;
+  animation: load 3s forwards;
+}
+
+@keyframes load {
+  to { width: 100%; }
+}
+
+/* =========================
+   📱 RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+.turntable {
+  width: 100vw;
+  height: 100vw;
+  max-width: none;
+  max-height: none;
+  transform: translateX(-10px);
+}
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@media (max-width: 768px) {
+  body {
+    align-content: center;
+  }
+}
+
+  .vinyl {
+    width: 100%;
+    height: 100%;
+  }
+
+  .platter {
+    width: 104%;
+    height: 104%;
+  }
+
+  .arm {
+    width: 100px;
+    top: -60px;
+    right: -30px;
+  }
+
+  .palette-note {
+    bottom: 38px;
+    font-size: 14px;
+  }
+}
+/* =========================
+   CENTRADO WEB
+========================= */
+.scene {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  .scene {
+    display: block;
+    min-height: auto;
+  }
+}
+/* =========================
+   FONDO HOJAS CANVAS
+========================= */
+#leavesCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#invite-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(200, 162, 122, 0.92);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loader-content {
+  text-align: center;
+  font-family: Georgia, serif;
+  color: #5a2a12;
+  letter-spacing: 1px;
+}
+
+.loader-ring {
+  width: 72px;
+  height: 72px;
+  border: 3px solid rgba(90, 42, 18, 0.2);
+  border-top-color: #5a2a12;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spinSoft 1.2s linear infinite;
+}
+
+@keyframes spinSoft {
+  to { transform: rotate(360deg); }
+}
+
+#invite-loader p {
+  font-size: 16px;
+  opacity: 0.85;
+}
+/* =========================
+   CAJA TOCADISCOS (FONDO)
+========================= */
+.turntable-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 620px;          /* tamaño en desktop */
+  max-width: 90vw;
+  z-index: 0;            /* detrás del vinilo */
+  pointer-events: none; /* no bloquea clics */
+  filter:
+    drop-shadow(0 25px 40px rgba(0,0,0,0.35))
+    saturate(1.05);
+}
+
+/* 📱 Ajuste móvil */
+@media (max-width: 768px) {
+  .turntable-box {
+    width: 92vw;
+  }
+}
