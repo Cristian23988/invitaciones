@@ -5,11 +5,11 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 
 BEGIN:VEVENT
-UID:boda-cristian-elizabeth@invitacion
+UID:boda-rober-eli@invitacion
 DTSTAMP:20260126T140000Z
 DTSTART:20260426T200000Z
 DTEND:20260427T013000Z
-SUMMARY:Calendario - Boda Cristian & Elizabeth
+SUMMARY:Calendario - Boda Rober & Eli
 DESCRIPTION:Celebramos nuestra boda. ¡Te esperamos!
 LOCATION:Casa Cruz Eventos / Llano Grande - Antioquia
 END:VEVENT

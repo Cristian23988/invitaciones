@@ -1,6 +1,6 @@
 # Invitacion de boda
 
-Pagina estatica para la invitacion de Cristian y Elizabeth.
+Pagina estatica para la invitacion de Rober y Eli.
 
 ## Archivos principales
 
