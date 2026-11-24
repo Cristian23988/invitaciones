@@ -1,12 +1,9 @@
 // Inicializar AOS y Fancybox
     AOS.init({ once: true, duration: 800, offset: 80 });
-    // Fancybox para la galería (usando data-fancybox en los <a>)
-    // Si prefieres lightGallery, descomenta las líneas siguientes y ajusta el HTML:
-    // lightGallery(document.getElementById('lightgallery'), { selector: 'a' });
 
-    // Cuenta regresiva (26 agosto 2026, 00:00:00)
+    // Cuenta regresiva (27 diciembre 2026, 00:00:00)
     (function() {
-      const target = new Date(2026, 3, 26, 0, 0, 0); // mes 7 = agosto (0-based)
+      const target = new Date(2026, 11, 27, 0, 0, 0); // Diciembre es el mes 11 (base cero).
       const el = {
         d: document.getElementById('cd-days'),
         h: document.getElementById('cd-hours'),
@@ -34,106 +31,188 @@
       setInterval(tick, 1000);
     })();
 
-const playBtn = document.getElementById('playBtn');
-  const audio = document.getElementById('weddingAudio');
-
-  let isPlaying = false;
-
-  playBtn.addEventListener('click', () => {
-    if (!isPlaying) {
-      audio.play();
-      playBtn.innerHTML = '<i class="las la-pause me-2"></i> Pausar música';
-      isPlaying = true;
-    } else {
-      audio.pause();
-      playBtn.innerHTML = '<i class="las la-music me-2"></i> Reproducir música';
-      isPlaying = false;
-    }
-  });
-
-const storySection = document.querySelector('.story-section');
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        storySection.classList.add('loaded');
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-
-  observer.observe(storySection);
-
 document.addEventListener("DOMContentLoaded", function () {
+  const galleryImages = Array.from(document.querySelectorAll(".gallery-grid img[data-src]"));
+  const loadGalleryImage = image => {
+    image.src = image.dataset.src;
+    image.removeAttribute("data-src");
+  };
 
-  const video = document.querySelector(".story-bg-video");
-  if (!video) return;
+  if ("IntersectionObserver" in window) {
+    const imageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        loadGalleryImage(entry.target);
+        imageObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: "200px 0px" });
 
-  // 📱 Detectar móvil
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  // 🎥 TUS VIDEOS (NO CAMBIAR)
-  const videoWeb = "https://github.com/Cristian23988/invitaciones/releases/download/v1.1/fondoGif.m4v";
-  const videoMobile = "https://github.com/Cristian23988/invitaciones/releases/download/v1.1/720.m4v";
-
-  // 👉 Elegir según dispositivo
-  const selectedVideo = isMobile ? videoMobile : videoWeb;
-
-  // ⚙️ Configuración OBLIGATORIA
-  video.muted = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.controls = false;
-  video.preload = "auto";
-
-  // 🔗 Asignar src UNA SOLA VEZ
-  video.src = selectedVideo;
-  video.load();
-
-  /* =========================
-     🖥️ WEB — AUTOPLAY REAL
-     ========================= */
-  if (!isMobile) {
-    video.autoplay = true;
-
-    video.play().catch(() => {
-      console.warn("Autoplay bloqueado en web");
-    });
-  }
-
-  /* =========================
-     📱 MÓVIL — SIN BOTÓN DE PLAY
-     ========================= */
-  if (isMobile) {
-    video.autoplay = false;
-
-    const startVideo = () => {
-      video.play().then(() => {
-        document.removeEventListener("touchstart", startVideo);
-        document.removeEventListener("click", startVideo);
-      }).catch(() => {});
-    };
-
-    // 🔑 Primer gesto válido (requerido por móviles)
-    document.addEventListener("touchstart", startVideo, { once: true });
-    document.addEventListener("click", startVideo, { once: true });
+    galleryImages.forEach(image => imageObserver.observe(image));
+  } else {
+    galleryImages.forEach(loadGalleryImage);
   }
 
 });
 
-document.getElementById('SeeMan').addEventListener('click', function() {
-    // Cambia esta URL por la de Pinterest que quieras
-    window.location.href = 'https://pin.it/30a39TKLy';
-  });
+(function initializeWheelPanelScroll() {
+  const root = document.documentElement;
+  const panelSelector = [
+    'body > #home',
+    'body > #galeria',
+    'body > #cuenta',
+    'body > #evento',
+    'body > #ubicacion',
+    'body > #regalos',
+    'body > #rsvp',
+    'body > footer'
+  ].join(',');
+  const interactiveSelector = [
+    'nav',
+    'button',
+    'input',
+    'textarea',
+    'select',
+    'iframe',
+    'video',
+    'audio',
+    '[contenteditable="true"]',
+    '[role="dialog"]',
+    '.lg-outer',
+    '.fancybox__container'
+  ].join(',');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let wheelDelta = 0;
+  let wheelTimer = 0;
+  let animationFrame = 0;
+  let isAnimating = false;
+  let previousScrollBehavior = '';
+  let previousScrollSnapType = '';
+  let cooldownUntil = 0;
 
-document.getElementById('SeeWoman').addEventListener('click', function() {
-    // Cambia esta URL por la de Pinterest que quieras
-    window.location.href = 'https://pin.it/334lnTmeE';
-  });
+  if (reducedMotion.matches) return;
 
-function toggleCuenta() {
-    const cuenta = document.getElementById('cuenta-bancaria');
-    cuenta.style.display = cuenta.style.display === 'none' || cuenta.style.display === ''
-      ? 'block'
-      : 'none';
-  }
+  const clearWheelGesture = () => {
+    window.clearTimeout(wheelTimer);
+    wheelTimer = 0;
+    wheelDelta = 0;
+  };
+
+  const cancelAnimation = () => {
+    if (!isAnimating) return;
+    window.cancelAnimationFrame(animationFrame);
+    root.style.scrollBehavior = previousScrollBehavior;
+    root.style.scrollSnapType = previousScrollSnapType;
+    animationFrame = 0;
+    isAnimating = false;
+    cooldownUntil = performance.now() + 250;
+  };
+
+  const canScrollWithin = (target, delta) => {
+    for (let element = target; element && element !== document.body; element = element.parentElement) {
+      const style = window.getComputedStyle(element);
+      const scrollable = (style.overflowY === 'auto' || style.overflowY === 'scroll') &&
+        element.scrollHeight > element.clientHeight + 1;
+
+      if (!scrollable) continue;
+      if (delta < 0 && element.scrollTop > 1) return true;
+      if (delta > 0 && element.scrollTop + element.clientHeight < element.scrollHeight - 1) return true;
+    }
+
+    return false;
+  };
+
+  const getPanelPositions = () => {
+    const inset = Number.parseFloat(window.getComputedStyle(root).scrollPaddingTop) || 0;
+    const maxScroll = root.scrollHeight - window.innerHeight;
+    const positions = Array.from(document.querySelectorAll(panelSelector))
+      .filter(panel => panel.getClientRects().length > 0)
+      .map(panel => Math.max(0, Math.min(
+        maxScroll,
+        panel.getBoundingClientRect().top + window.scrollY - inset
+      )))
+      .sort((a, b) => a - b);
+
+    return positions.filter((position, index) =>
+      index === 0 || position - positions[index - 1] > 24
+    );
+  };
+
+  const moveToPanel = direction => {
+    const current = window.scrollY;
+    const positions = getPanelPositions();
+    const next = direction > 0
+      ? positions.find(position => position > current + 24)
+      : positions.filter(position => position < current - 24).pop();
+
+    if (next === undefined) return;
+
+    const start = current;
+    const distance = next - start;
+    const duration = 1050;
+    const startTime = performance.now();
+    previousScrollBehavior = root.style.scrollBehavior;
+    previousScrollSnapType = root.style.scrollSnapType;
+    root.style.scrollBehavior = 'auto';
+    root.style.scrollSnapType = 'none';
+    isAnimating = true;
+
+    const animate = now => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, start + distance * eased);
+
+      if (progress < 1) {
+        animationFrame = window.requestAnimationFrame(animate);
+        return;
+      }
+
+      window.scrollTo(0, next);
+      root.style.scrollBehavior = previousScrollBehavior;
+      root.style.scrollSnapType = previousScrollSnapType;
+      animationFrame = 0;
+      isAnimating = false;
+    };
+
+    animationFrame = window.requestAnimationFrame(animate);
+  };
+
+  document.addEventListener('wheel', event => {
+    const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1);
+    if (event.ctrlKey || delta === 0) return;
+
+    const target = event.target instanceof Element ? event.target : null;
+    if (target && target.closest(interactiveSelector)) {
+      clearWheelGesture();
+      return;
+    }
+    if (target && canScrollWithin(target, delta)) {
+      clearWheelGesture();
+      return;
+    }
+
+    if (isAnimating || performance.now() < cooldownUntil) {
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    wheelDelta += delta;
+    window.clearTimeout(wheelTimer);
+    wheelTimer = window.setTimeout(() => {
+      const direction = Math.sign(wheelDelta);
+      clearWheelGesture();
+      if (direction !== 0) moveToPanel(direction);
+    }, 90);
+  }, { passive: false });
+
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target || !target.closest('a[href^="#"]')) return;
+
+    clearWheelGesture();
+    cancelAnimation();
+  });
+})();

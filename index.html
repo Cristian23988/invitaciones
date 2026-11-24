@@ -6,29 +6,46 @@
   <meta name="theme-color" content="#050505">
   <meta name="description" content="Rober & Eli te invitan a celebrar su boda.">
   <title>Rober & Eli — Invitación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/index.css">
   <link rel="prefetch" href="Inicio.html">
 </head>
-
 <body>
   <main class="opening" id="opening">
     <div class="opening-frame" aria-hidden="true"></div>
-    <div class="opening-glow" aria-hidden="true"></div>
+    <div class="opening-ground" aria-hidden="true"></div>
 
     <div class="invitation-reveal" aria-hidden="true">
-      <p class="reveal-overline">ROBER <span>&</span> ELI</p>
+      <p class="reveal-overline">Rober <span>&</span> Eli</p>
       <h1 class="reveal-title">
-        <span class="title-line">TE INVITAMOS</span>
-        <span class="title-script">a celebrar nuestro amor</span>
+        <span class="title-line">ERES MUY IMPORTANTE</span>
+        <span class="title-script">para nosotros</span>
       </h1>
-      <p class="reveal-date">26 <span>·</span> ABRIL <span>·</span> 2026</p>
     </div>
+
+    <article class="final-invitation" aria-hidden="true">
+      <div class="final-layout">
+        <header class="final-heading">
+          <p class="final-overline">Rober <span>&</span> Eli</p>
+          <h2>TE INVITAMOS</h2>
+          <p class="final-script">a celebrar nuestro amor</p>
+        </header>
+        <figure class="final-photo">
+          <img src="assets/images/historia-6.jpg" alt="" fetchpriority="high" decoding="async">
+        </figure>
+        <p class="final-date">27 <span>·</span> DICIEMBRE <span>·</span> 2026</p>
+      </div>
+      <div class="final-frame" aria-hidden="true"></div>
+    </article>
 
     <a
       class="envelope"
       id="openInvitation"
       href="Inicio.html"
       aria-label="Abrir la invitación de Rober y Eli"
+      aria-keyshortcuts="Escape"
     >
       <span class="envelope-surface" aria-hidden="true"></span>
       <span class="envelope-fold fold-top" aria-hidden="true"></span>
@@ -36,15 +53,16 @@
       <span class="envelope-fold fold-right" aria-hidden="true"></span>
       <span class="envelope-fold fold-bottom" aria-hidden="true"></span>
       <span class="wax-seal" aria-hidden="true">
-        <svg viewBox="0 0 64 64" focusable="false">
-          <path d="M32 50V17m0 12c-10 0-15-7-15-15 10 0 15 6 15 15Zm0 8c10 0 15-7 15-15-10 0-15 6-15 15Zm0 4c-7 0-10-5-10-10 7 0 10 4 10 10Zm0 0c7 0 10-5 10-10-7 0-10 4-10 10Z"/>
-        </svg>
+        <img src="assets/images/sello-cera-marfil.webp" alt="" fetchpriority="high" decoding="async">
       </span>
     </a>
+
+    <audio id="weddingAudio" preload="none"></audio>
 
     <p class="open-prompt" id="openPrompt" aria-live="polite">Toca el sello para abrir</p>
   </main>
 
+  <script src="assets/js/wedding-music.js"></script>
   <script src="assets/js/index.js"></script>
 </body>
 </html>
