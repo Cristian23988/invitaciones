@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Invitación - Rober & Eli</title>
-
-<link rel=stylesheet href=assets/css/index.css>
-<link rel="preload" href="Inicio.html" as="document">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="Una invitación especial de Rober & Eli.">
+  <title>Rober & Eli — Invitación</title>
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="prefetch" href="Inicio.html">
 </head>
 
 <body>
-<canvas id="leavesCanvas"></canvas>
+  <main class="entrance">
+    <div class="frame" aria-hidden="true"></div>
+    <div class="light light-left" aria-hidden="true"></div>
+    <div class="light light-right" aria-hidden="true"></div>
 
-<div id="loader">
-  <div class="bar"><div class="progress"></div></div>
-</div>
+    <header class="topline">
+      <span>UNA INVITACIÓN ESPECIAL</span>
+      <span class="topline-mark">R <i>&</i> E</span>
+    </header>
 
-<div class="scene">
+    <section class="intro" aria-labelledby="couple-names">
+      <p class="eyebrow">CON ALEGRÍA EN NUESTROS CORAZONES</p>
+      <h1 id="couple-names">Rober <span>&</span> Eli</h1>
+      <p class="intro-copy">Queremos compartir contigo el comienzo de nuestra historia.</p>
+    </section>
 
-
-  <div class="turntable">
-    <div class="platter"></div>
-
-    <div class="vinyl">
-      <div class="label">
-        <span class="names">
-          Rober &<br>
-          Eli
+    <div class="invitation-stage">
+      <a
+        class="envelope"
+        id="openInvitation"
+        href="Inicio.html"
+        aria-label="Abrir la invitación de Rober y Eli"
+      >
+        <span class="invitation-card" aria-hidden="true">
+          <span class="card-overline">NOS CASAMOS</span>
+          <span class="card-names">Rober <i>&</i> Eli</span>
+          <span class="card-divider"></span>
+          <span class="card-date">26 <i>·</i> 04 <i>·</i> 2026</span>
+          <span class="card-place">RIONEGRO, ANTIOQUIA</span>
         </span>
-      </div>
-      <div class="hole"></div>
+        <span class="envelope-back" aria-hidden="true"></span>
+        <span class="envelope-front" aria-hidden="true"></span>
+        <span class="envelope-flap" aria-hidden="true"></span>
+        <span class="wax-seal" aria-hidden="true">R<span>&</span>E</span>
+      </a>
     </div>
 
-    
+    <p class="open-prompt" id="openPrompt">Toca la invitación para abrirla</p>
 
-    <img src="assets/images/brazo.png" class="arm">
-  </div>
-</div>
-<div class="palette-note">Toca el vinilo para continuar con la invitación</div>
-<div id="invite-loader">
-  <div class="loader-content">
-    <div class="loader-ring"></div>
-    <p>Cargando invitación…</p>
-  </div>
-</div>
+    <footer class="bottomline">
+      <span>CON TODO NUESTRO CARIÑO</span>
+      <span>ROBER & ELI</span>
+    </footer>
+  </main>
 
-<script src=assets/js/index.js></script>
+  <script src="assets/js/index.js"></script>
 </body>
-
-
-
-
-
-
-
 </html>
