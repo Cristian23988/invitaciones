@@ -1,9 +1,9 @@
 :root {
   color-scheme: dark;
   --black: #090909;
-  --paper: #f4f2ee;
+  --paper: #f0ece4;
   --muted: #a4a19b;
-  --line: rgba(255, 255, 255, 0.16);
+  --silver: #c4bfb5;
 }
 
 * {
@@ -20,8 +20,7 @@ body {
 body {
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 45%, rgba(73, 73, 73, 0.2), transparent 48%),
-    linear-gradient(145deg, #111 0%, var(--black) 48%, #050505 100%);
+    radial-gradient(ellipse at 50% 48%, #171717 0%, #0c0c0c 48%, #050505 100%);
   color: var(--paper);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -36,7 +35,7 @@ body {
   overflow: hidden;
   padding: clamp(24px, 5vh, 52px) clamp(22px, 7vw, 90px) 28px;
   isolation: isolate;
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  transition: opacity 0.55s ease, transform 0.55s ease;
 }
 
 .entrance::before {
@@ -57,7 +56,7 @@ body {
   position: absolute;
   z-index: -1;
   inset: 20px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   pointer-events: none;
 }
 
@@ -110,7 +109,7 @@ body {
 
 .topline-mark i,
 .intro h1 span,
-.card-names i {
+.sheet-names i {
   color: #aaa69f;
   font-style: normal;
 }
@@ -177,192 +176,274 @@ body {
   position: relative;
   z-index: 1;
   display: grid;
-  width: min(100%, 460px);
+  width: min(100%, 860px);
   flex: 1;
-  min-height: 290px;
+  min-height: 390px;
+  max-height: 530px;
   place-items: center;
-  perspective: 1300px;
+  perspective: 1500px;
 }
 
-.invitation-stage::before {
+.paper-disc {
   position: absolute;
-  bottom: 13%;
-  left: 50%;
-  width: min(80vw, 430px);
-  height: 110px;
+  top: 50%;
+  left: 45%;
+  width: min(52vw, 450px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  content: "";
-  filter: blur(55px);
-  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 28%, #fbf8f1 0%, #eee9df 45%, #dbd5c9 100%);
+  box-shadow:
+    inset 0 0 35px rgba(80, 72, 59, 0.11),
+    0 24px 48px rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%);
+  transition: transform 1s ease, opacity 0.8s ease;
 }
 
-.envelope {
-  position: relative;
+.paper-texture {
+  background-image:
+    url("../images/paper-grain.svg"),
+    linear-gradient(145deg, #f8f5ee 0%, #eee9df 55%, #e2dcd1 100%);
+  background-size: 160px 160px, cover;
+}
+
+.pampas-stems {
+  position: absolute;
+  z-index: 2;
+  bottom: 3%;
+  left: calc(50% - 315px);
+  width: clamp(110px, 18vw, 180px);
+  height: 88%;
+  object-fit: contain;
+  filter: drop-shadow(4px 8px 8px rgba(0, 0, 0, 0.28));
+  pointer-events: none;
+  transform: rotate(-2deg);
+  transform-origin: bottom center;
+}
+
+.invitation-set {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
   display: block;
-  width: min(82vw, 410px);
-  height: 250px;
-  color: inherit;
+  width: clamp(280px, 38vw, 360px);
+  height: clamp(340px, 46vw, 430px);
+  color: #191816;
   outline: none;
   text-decoration: none;
-  transform: translateY(28px);
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transform: translate(-34%, -50%) rotate(-1deg);
+  transition: filter 0.5s ease, transform 0.7s cubic-bezier(0.2, 0.75, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
-.envelope:focus-visible {
-  outline: 1px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 8px;
+.invitation-set:hover,
+.invitation-set:focus-visible {
+  filter: drop-shadow(0 22px 24px rgba(0, 0, 0, 0.4));
+  transform: translate(-34%, -51%) rotate(-0.4deg);
 }
 
-.envelope:hover,
-.envelope:focus-visible {
-  filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.55));
-  transform: translateY(20px);
+.invitation-set:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 9px;
 }
 
-.invitation-card {
+.black-folder {
+  position: absolute;
+  z-index: 0;
+  top: 1%;
+  left: 8%;
+  display: block;
+  width: 88%;
+  height: 96%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.055), transparent 35%),
+    linear-gradient(135deg, #242424, #111 64%, #080808);
+  box-shadow:
+    inset 0 0 0 8px rgba(0, 0, 0, 0.14),
+    0 24px 38px rgba(0, 0, 0, 0.5);
+  transform: rotate(1.2deg);
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+
+.black-folder::before {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  content: "";
+}
+
+.invitation-sheet {
   position: absolute;
   z-index: 1;
-  top: -94px;
-  left: 50%;
+  top: 14%;
+  left: 14%;
   display: flex;
   width: 76%;
-  height: 300px;
+  height: 82%;
   flex-direction: column;
   align-items: center;
-  padding: 10px 12px 0;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(235, 233, 228, 0.98)),
-    var(--paper);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.24);
-  color: #141414;
-  transform: translateX(-50%);
-  transition: transform 0.8s cubic-bezier(0.2, 0.75, 0.2, 1);
+  padding: 38px 16px 20px;
+  border: 1px solid rgba(49, 45, 39, 0.22);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.18);
+  color: #201e1a;
+  transform: translateY(0);
+  transition:
+    transform 1s cubic-bezier(0.18, 0.72, 0.2, 1),
+    box-shadow 0.8s ease;
 }
 
-.invitation-card::before {
-  position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(28, 27, 25, 0.16);
-  content: "";
-  pointer-events: none;
+.invitation-sheet > span {
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
 
-.card-overline,
-.card-place {
-  color: #5e5b55;
-  font-size: 7px;
+.sheet-overline,
+.sheet-place {
+  color: #6d675d;
+  font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.28em;
 }
 
-.card-names {
-  margin-top: 3px;
+.sheet-names {
+  margin-top: 21px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(22px, 5vw, 30px);
+  font-size: clamp(23px, 3vw, 34px);
   letter-spacing: 0.015em;
 }
 
-.card-names i {
-  color: #77736c;
-}
-
-.card-divider {
-  width: 35px;
+.sheet-rule {
+  width: 42px;
   height: 1px;
-  margin: 5px 0;
-  background: #77736c;
+  margin: 17px 0;
+  background: #8d877d;
 }
 
-.card-date {
+.sheet-message {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-size: 13px;
+  font-style: italic;
 }
 
-.card-date i {
-  padding: 0 4px;
-  color: #89857f;
-  font-style: normal;
+.sheet-date {
+  margin-top: 38px;
+  color: #37332d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
 }
 
-.card-place {
-  margin-top: 5px;
-  font-size: 6px;
-  letter-spacing: 0.2em;
+.sheet-place {
+  margin-top: 8px;
+  font-size: 7px;
 }
 
-.envelope-back,
-.envelope-front,
-.envelope-flap {
+.cover-flap {
   position: absolute;
-  inset: 0;
-}
-
-.envelope-back {
   z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: linear-gradient(145deg, #242424, #111 70%);
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.55);
+  top: 14%;
+  left: 36%;
+  display: block;
+  width: 60%;
+  height: 82%;
+  border: 1px solid rgba(67, 61, 52, 0.24);
+  box-shadow:
+    inset 1px 0 rgba(255, 255, 255, 0.72),
+    8px 9px 22px rgba(0, 0, 0, 0.16);
+  transform: rotateY(0);
+  transform-origin: left center;
+  transition:
+    transform 1.05s cubic-bezier(0.2, 0.7, 0.15, 1),
+    box-shadow 0.8s ease;
+  backface-visibility: hidden;
 }
 
-.envelope-back::after {
+.cover-flap::before {
   position: absolute;
   inset: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(70, 65, 58, 0.14);
   content: "";
+  pointer-events: none;
 }
 
-.envelope-front {
-  z-index: 3;
-  background:
-    linear-gradient(148deg, transparent 49.4%, rgba(255, 255, 255, 0.2) 50%, #181818 50.6%),
-    linear-gradient(32deg, #0d0d0d 49.4%, rgba(255, 255, 255, 0.16) 50%, #202020 50.6%),
-    linear-gradient(145deg, #171717, #0b0b0b);
-  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
-  transition: transform 0.7s ease, opacity 0.7s ease;
-}
-
-.envelope-flap {
+.cord {
+  position: absolute;
   z-index: 4;
-  height: 62%;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(150deg, #292929, #171717 70%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: 50% 0;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  backface-visibility: hidden;
+  display: block;
+  height: 2px;
+  background: linear-gradient(to bottom, #f9f6ef 0%, #80796f 42%, #292722 72%, #d7d1c7 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition:
+    opacity 0.45s ease,
+    transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cord-upper,
+.cord-lower {
+  right: 0;
+  left: 0;
+}
+
+.cord-upper {
+  top: 48%;
+}
+
+.cord-lower {
+  top: 55%;
+}
+
+.cord-left,
+.cord-right {
+  top: 51.5%;
+  width: 51%;
+}
+
+.cord-left {
+  left: 0;
+  transform: rotate(7deg);
+  transform-origin: right center;
+}
+
+.cord-right {
+  right: 0;
+  transform: rotate(-7deg);
+  transform-origin: left center;
 }
 
 .wax-seal {
   position: absolute;
   z-index: 5;
-  top: 44%;
+  top: 51.5%;
   left: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  width: 48px;
+  display: grid;
+  width: 66px;
   aspect-ratio: 1;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid #5b5956;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #353535, #101010 72%);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
-  color: #f0eee9;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
+  background:
+    radial-gradient(circle at 34% 27%, #44423f 0%, #181817 43%, #050505 78%);
+  box-shadow:
+    inset 0 0 0 4px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 5px rgba(220, 216, 207, 0.28),
+    0 5px 12px rgba(0, 0, 0, 0.48);
   transform: translate(-50%, -50%);
-  transition: opacity 0.25s ease, transform 0.35s ease;
+  transition:
+    opacity 0.4s ease 0.2s,
+    transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.wax-seal span {
-  color: #aaa69f;
+.wax-seal svg {
+  width: 29px;
+  fill: none;
+  stroke: #bdb8ae;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1;
+  filter: drop-shadow(0 1px 1px #000);
 }
 
 .open-prompt {
@@ -375,7 +456,7 @@ body {
   letter-spacing: 0.24em;
   text-align: center;
   text-transform: uppercase;
-  transition: opacity 0.25s ease;
+  transition: color 0.3s ease;
 }
 
 .bottomline {
@@ -384,27 +465,56 @@ body {
   font-size: 8px;
 }
 
-.is-opening .invitation-card {
+.is-opening .invitation-sheet {
   z-index: 6;
-  transform: translateX(-50%) translateY(-150px) rotate(-1deg) scale(1.04);
+  box-shadow: 0 26px 42px rgba(0, 0, 0, 0.42);
+  transform: translateY(-78px) scale(1.035);
+  transition-delay: 0.2s;
 }
 
-.is-opening .envelope-flap {
-  transform: rotateX(-180deg);
+.is-opening .invitation-sheet > span {
+  opacity: 1;
+  transition-delay: 0.65s;
 }
 
-.is-opening .envelope-front {
-  opacity: 0.12;
-  transform: translateY(42px);
+.is-opening .cover-flap {
+  box-shadow: 16px 18px 30px rgba(0, 0, 0, 0.35);
+  transform: perspective(900px) rotateY(-145deg);
 }
 
-.is-opening .envelope {
-  transform: translateY(38px) scale(1.025);
+.is-opening .cord {
+  opacity: 0;
+}
+
+.is-opening .cord-left {
+  transform: rotate(18deg) translateX(-45px);
+}
+
+.is-opening .cord-right {
+  transform: rotate(-18deg) translateX(45px);
+}
+
+.is-opening .cord-upper {
+  transform: translateY(-18px) scaleX(0.82);
+}
+
+.is-opening .cord-lower {
+  transform: translateY(18px) scaleX(0.82);
 }
 
 .is-opening .wax-seal {
   opacity: 0;
-  transform: translate(-50%, -115%) scale(1.35);
+  transform: translate(-50%, -50%) scale(1.65) rotate(18deg);
+}
+
+.is-opening .black-folder {
+  opacity: 0.72;
+  transform: translateY(22px) rotate(1.2deg);
+}
+
+.is-opening .paper-disc {
+  opacity: 0.72;
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
 .is-opening .intro {
@@ -417,7 +527,7 @@ body {
 }
 
 .is-opening .entrance {
-  transition-delay: 1s;
+  transition-delay: 1.4s;
   opacity: 0;
   transform: scale(1.015);
 }
@@ -441,7 +551,7 @@ body {
   }
 
   .intro {
-    padding-top: 36px;
+    padding-top: 12px;
   }
 
   .eyebrow {
@@ -449,24 +559,54 @@ body {
     letter-spacing: 0.24em;
   }
 
+  .intro-copy {
+    max-width: 340px;
+    line-height: 1.5;
+  }
+
   .invitation-stage {
-    min-height: 270px;
+    width: 100%;
+    min-height: 330px;
+    max-height: none;
   }
 
-  .envelope {
-    width: min(82vw, 360px);
-    height: 210px;
-    transform: translateY(20px);
+  .paper-disc {
+    left: 45%;
+    width: min(88vw, 340px);
   }
 
-  .envelope:hover,
-  .envelope:focus-visible {
-    transform: translateY(16px);
+  .pampas-stems {
+    bottom: 5%;
+    left: 1%;
+    width: clamp(82px, 25vw, 112px);
+    height: 82%;
   }
 
-  .invitation-card {
-    top: -92px;
-    height: 275px;
+  .invitation-set {
+    width: min(76vw, 295px);
+    height: 335px;
+    transform: translate(-35%, -50%) rotate(-1deg);
+  }
+
+  .invitation-set:hover,
+  .invitation-set:focus-visible {
+    transform: translate(-35%, -50%) rotate(-0.4deg);
+  }
+
+  .invitation-sheet {
+    padding: 30px 12px 18px;
+  }
+
+  .sheet-names {
+    margin-top: 16px;
+  }
+
+  .sheet-date {
+    margin-top: 28px;
+  }
+
+  .wax-seal {
+    width: 60px;
   }
 
   .open-prompt {
@@ -474,25 +614,78 @@ body {
     letter-spacing: 0.18em;
   }
 
-  @media (max-width: 380px) {
-    .entrance {
-      padding-right: 22px;
-      padding-left: 22px;
-    }
-
-    .envelope {
-      width: 84vw;
-      height: 195px;
-    }
-
-    .invitation-card {
-      width: 80%;
-    }
-  }
-
   .bottomline {
     font-size: 6px;
     letter-spacing: 0.2em;
+  }
+}
+
+@media (max-width: 380px) {
+  .entrance {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .invitation-stage {
+    min-height: 300px;
+  }
+
+  .paper-disc {
+    width: min(86vw, 300px);
+  }
+
+  .invitation-set {
+    width: min(78vw, 270px);
+    height: 310px;
+    transform: translate(-40%, -50%) rotate(-1deg);
+  }
+
+  .invitation-set:hover,
+  .invitation-set:focus-visible {
+    transform: translate(-40%, -50%) rotate(-0.4deg);
+  }
+
+  .invitation-sheet {
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 600px) and (max-height: 650px) {
+  .entrance {
+    padding-top: 18px;
+    padding-bottom: 16px;
+  }
+
+  .intro {
+    padding-top: 2px;
+  }
+
+  .intro::before {
+    margin-bottom: 6px;
+  }
+
+  .eyebrow {
+    margin-bottom: 9px;
+  }
+
+  .intro-copy {
+    margin-top: 10px;
+  }
+
+  .intro-copy::after {
+    margin-top: 10px;
+  }
+
+  .invitation-stage {
+    min-height: 250px;
+  }
+
+  .invitation-set {
+    height: 270px;
+  }
+
+  .bottomline {
+    padding-top: 12px;
   }
 }
 

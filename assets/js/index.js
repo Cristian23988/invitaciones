@@ -15,5 +15,5 @@ invitation.addEventListener("click", event => {
 
   window.setTimeout(() => {
     window.location.href = invitation.href;
-  }, reducedMotion ? 100 : 1650);
+  }, reducedMotion ? 100 : 2100);
 });

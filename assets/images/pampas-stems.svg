@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 440" fill="none">
+  <defs>
+    <linearGradient id="stem" x1="30" y1="410" x2="105" y2="35" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#82775f"/>
+      <stop offset=".52" stop-color="#c5b99f"/>
+      <stop offset="1" stop-color="#756b59"/>
+    </linearGradient>
+    <linearGradient id="plume" x1="75" y1="42" x2="112" y2="171" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#050505"/>
+      <stop offset=".5" stop-color="#171717"/>
+      <stop offset="1" stop-color="#080808"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M18 430C32 335 57 238 96 39" stroke="url(#stem)" stroke-width="2"/>
+  <path d="M31 430C39 347 54 275 67 179" stroke="url(#stem)" stroke-width="1.5"/>
+
+  <path d="M96 40C78 66 66 96 73 125C77 145 87 160 96 173C106 155 116 135 118 111C121 84 111 59 96 40Z" fill="url(#plume)"/>
+  <path d="M67 180C51 200 44 222 49 243C52 257 59 270 66 282C76 268 83 254 85 237C87 215 78 195 67 180Z" fill="url(#plume)"/>
+
+  <g stroke="#6b655a" stroke-linecap="round" opacity=".58">
+    <path d="M96 51L85 71M99 55L108 77M92 64L79 84M102 68L115 91M89 78L76 99M105 82L118 107M86 93L75 114M107 97L118 123M86 111L77 132M105 113L115 137M89 132L81 149M101 133L109 151"/>
+    <path d="M67 188L57 204M71 192L80 208M62 202L52 218M75 205L84 223M57 216L50 231M78 219L84 237M56 234L52 246M74 235L80 253M62 251L58 264M69 254L74 269"/>
+  </g>
+  <g stroke="#111" stroke-width=".8" opacity=".7">
+    <path d="M96 46C94 89 95 129 96 169"/>
+    <path d="M67 185C65 214 66 246 66 278"/>
+    <path d="M81 91L101 101M82 116L101 124M59 220L73 225M58 240L72 245"/>
+  </g>
+</svg>
