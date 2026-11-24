@@ -7,6 +7,16 @@ invitation.addEventListener("click", event => {
     return;
   }
 
+  if (invitation.getAttribute("aria-disabled") === "true") {
+    event.preventDefault();
+    return;
+  }
+
+  if (!event.target.closest(".wax-seal") && event.detail !== 0) {
+    event.preventDefault();
+    return;
+  }
+
   event.preventDefault();
   document.body.classList.add("is-opening");
   invitation.classList.add("is-opening");
@@ -15,5 +25,5 @@ invitation.addEventListener("click", event => {
 
   window.setTimeout(() => {
     window.location.href = invitation.href;
-  }, reducedMotion ? 100 : 2100);
+  }, reducedMotion ? 100 : 3700);
 });
