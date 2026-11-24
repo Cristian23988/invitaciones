@@ -8,16 +8,44 @@
   let fadeTimer;
   let saveTimer;
 
+  if (window.parent !== window && window.parent.weddingMusic) {
+    const parentMusic = window.parent.weddingMusic;
+    const syncControlState = () => {
+      const isPlaying = parentMusic.isPlaying();
+      if (toggleButton) {
+        toggleButton.classList.toggle("is-playing", isPlaying);
+        toggleButton.setAttribute("aria-label", isPlaying ? "Pausar música" : "Reproducir música");
+        toggleButton.setAttribute("aria-pressed", String(isPlaying));
+      }
+    };
+
+    if (toggleButton) toggleButton.addEventListener("click", parentMusic.toggle);
+    if (restartButton) {
+      restartButton.addEventListener("click", () => {
+        parentMusic.restart();
+        restartButton.classList.remove("is-restarting");
+        void restartButton.offsetWidth;
+        restartButton.classList.add("is-restarting");
+        window.setTimeout(() => restartButton.classList.remove("is-restarting"), 650);
+      });
+    }
+
+    window.parent.addEventListener("weddingmusicchange", syncControlState);
+    syncControlState();
+    return;
+  }
+
   if (!audio) return;
 
   audio.src = new URL("../media/InstrumentalElida.mp3", document.currentScript.src).href;
 
   const setControlState = isPlaying => {
-    if (!toggleButton) return;
-
-    toggleButton.classList.toggle("is-playing", isPlaying);
-    toggleButton.setAttribute("aria-label", isPlaying ? "Pausar música" : "Reproducir música");
-    toggleButton.setAttribute("aria-pressed", String(isPlaying));
+    if (toggleButton) {
+      toggleButton.classList.toggle("is-playing", isPlaying);
+      toggleButton.setAttribute("aria-label", isPlaying ? "Pausar música" : "Reproducir música");
+      toggleButton.setAttribute("aria-pressed", String(isPlaying));
+    }
+    window.dispatchEvent(new Event("weddingmusicchange"));
   };
 
   const savePosition = () => {
@@ -77,6 +105,29 @@
     setControlState(false);
   };
 
+  const toggle = () => {
+    if (audio.paused || audio.ended) {
+      start();
+    } else {
+      audio.pause();
+      sessionStorage.setItem(requestedKey, "false");
+    }
+  };
+
+  const restart = () => {
+    const resetPosition = () => {
+      audio.currentTime = 0;
+      sessionStorage.setItem(positionKey, "0");
+    };
+
+    if (audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      resetPosition();
+    } else {
+      audio.addEventListener("loadedmetadata", resetPosition, { once: true });
+    }
+    start();
+  };
+
   audio.addEventListener("playing", () => {
     sessionStorage.setItem(requestedKey, "true");
     setControlState(true);
@@ -98,29 +149,12 @@
   });
 
   if (toggleButton) {
-    toggleButton.addEventListener("click", () => {
-      if (audio.paused || audio.ended) {
-        start();
-      } else {
-        audio.pause();
-        sessionStorage.setItem(requestedKey, "false");
-      }
-    });
+    toggleButton.addEventListener("click", toggle);
   }
 
   if (restartButton) {
     restartButton.addEventListener("click", () => {
-      const resetPosition = () => {
-        audio.currentTime = 0;
-        sessionStorage.setItem(positionKey, "0");
-      };
-
-      if (audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
-        resetPosition();
-      } else {
-        audio.addEventListener("loadedmetadata", resetPosition, { once: true });
-      }
-      start();
+      restart();
 
       restartButton.classList.remove("is-restarting");
       void restartButton.offsetWidth;
@@ -150,5 +184,11 @@
   }
 
   window.addEventListener("beforeunload", savePosition);
-  window.weddingMusic = { start, stop };
+  window.weddingMusic = {
+    start,
+    stop,
+    toggle,
+    restart,
+    isPlaying: () => !audio.paused && !audio.ended
+  };
 })();

@@ -1,9 +1,37 @@
 const invitation = document.getElementById("openInvitation");
+const invitationPage = document.getElementById("invitationPage");
 const prompt = document.getElementById("openPrompt");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const openingTitle = document.title;
 let redirectTimer;
 let revealTimer;
 let resetTimer;
+
+invitationPage.addEventListener("load", () => {
+  if (!invitationPage.hasAttribute("src")) return;
+
+  invitationPage.removeAttribute("aria-hidden");
+  document.body.classList.add("is-invitation-loaded");
+  document.title = invitationPage.contentDocument.title;
+  if (!window.history.state || !window.history.state.invitationPage) {
+    window.history.pushState({ invitationPage: true }, "", invitation.href);
+  }
+});
+
+window.addEventListener("popstate", event => {
+  if (event.state && event.state.invitationPage) {
+    invitationPage.removeAttribute("aria-hidden");
+    document.body.classList.add("is-invitation-loaded");
+    return;
+  }
+
+  document.body.classList.remove("is-invitation-loaded", "is-opening", "is-card-reveal");
+  invitationPage.setAttribute("aria-hidden", "true");
+  invitation.setAttribute("aria-disabled", "false");
+  prompt.textContent = "Toca el sello para abrir";
+  document.title = openingTitle;
+  window.weddingMusic.stop();
+});
 
 invitation.addEventListener("click", event => {
   if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -32,7 +60,7 @@ invitation.addEventListener("click", event => {
   }, reducedMotion ? 0 : 3100);
 
   redirectTimer = window.setTimeout(() => {
-    window.location.href = invitation.href;
+    invitationPage.src = invitation.href;
   }, reducedMotion ? 1200 : 5200);
 });
 
