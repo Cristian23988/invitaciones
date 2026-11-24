@@ -3,12 +3,14 @@ const invitationPage = document.getElementById("invitationPage");
 const prompt = document.getElementById("openPrompt");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const openingTitle = document.title;
-let redirectTimer;
+let transitionTimer;
 let revealTimer;
 let resetTimer;
+let invitationReady = false;
+let shouldShowInvitation = false;
 
-invitationPage.addEventListener("load", () => {
-  if (!invitationPage.hasAttribute("src")) return;
+const revealInvitation = () => {
+  if (!invitationReady || !shouldShowInvitation) return;
 
   invitationPage.removeAttribute("aria-hidden");
   document.body.classList.add("is-invitation-loaded");
@@ -16,15 +18,23 @@ invitationPage.addEventListener("load", () => {
   if (!window.history.state || !window.history.state.invitationPage) {
     window.history.pushState({ invitationPage: true }, "", invitation.href);
   }
+};
+
+invitationPage.addEventListener("load", () => {
+  if (!invitationPage.hasAttribute("src")) return;
+
+  invitationReady = true;
+  revealInvitation();
 });
 
 window.addEventListener("popstate", event => {
   if (event.state && event.state.invitationPage) {
-    invitationPage.removeAttribute("aria-hidden");
-    document.body.classList.add("is-invitation-loaded");
+    shouldShowInvitation = true;
+    revealInvitation();
     return;
   }
 
+  shouldShowInvitation = false;
   document.body.classList.remove("is-invitation-loaded", "is-opening", "is-card-reveal");
   invitationPage.setAttribute("aria-hidden", "true");
   invitation.setAttribute("aria-disabled", "false");
@@ -54,13 +64,16 @@ invitation.addEventListener("click", event => {
   prompt.textContent = "Abriendo tu invitación…";
   sessionStorage.setItem("weddingMusicPosition", "0");
   window.weddingMusic.start();
+  shouldShowInvitation = false;
+  if (!invitationPage.hasAttribute("src")) invitationPage.src = invitation.href;
 
   revealTimer = window.setTimeout(() => {
     document.body.classList.add("is-card-reveal");
   }, reducedMotion ? 0 : 3100);
 
-  redirectTimer = window.setTimeout(() => {
-    invitationPage.src = invitation.href;
+  transitionTimer = window.setTimeout(() => {
+    shouldShowInvitation = true;
+    revealInvitation();
   }, reducedMotion ? 1200 : 5200);
 });
 
@@ -70,7 +83,7 @@ document.addEventListener("keydown", event => {
   }
 
   window.clearTimeout(revealTimer);
-  window.clearTimeout(redirectTimer);
+  window.clearTimeout(transitionTimer);
   window.clearTimeout(resetTimer);
   window.weddingMusic.stop();
   document.body.classList.remove("is-opening", "is-card-reveal");
